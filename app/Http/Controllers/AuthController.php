@@ -90,11 +90,12 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
 
         // Create an HTTP-only cookie for the token (valid for 1 day)
-        $cookie = cookie('auth_token', $token, 60 * 24, null, null, env('APP_ENV') !== 'local', true);
+        $cookie = cookie('auth_token', $token, 60 * 24, '/', null, false, true, false, 'Lax');
 
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
+          
         ])->withCookie($cookie);
     }
 }
