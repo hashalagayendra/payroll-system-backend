@@ -7,7 +7,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('user/register', [\App\Http\Controllers\UserController::class, 'registerUser']);
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+    Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+});
 
 Route::prefix('users')->group(function () {
     Route::get('/', [\App\Http\Controllers\UserController::class, 'getAllUsers']);
