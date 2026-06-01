@@ -7,9 +7,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+Route::post('user/register', [\App\Http\Controllers\UserController::class, 'registerUser']);
+
 Route::prefix('users')->group(function () {
     Route::get('/', [\App\Http\Controllers\UserController::class, 'getAllUsers']);
-    Route::post('/', [\App\Http\Controllers\UserController::class, 'createNewUser']);
     Route::get('/{user}', [\App\Http\Controllers\UserController::class, 'getUserById']);
     Route::put('/{user}', [\App\Http\Controllers\UserController::class, 'updateUserName']);
     Route::delete('/{user}', [\App\Http\Controllers\UserController::class, 'deleteUser']);

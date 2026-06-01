@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -20,23 +22,61 @@ class UserController extends Controller
     }
 
     /**
-     * Validate request and create a new user.
+     * Validate request and register a new user.
      */
-    public function createNewUser(Request $request): JsonResponse
+    public function registerUser(Request $request): JsonResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'employee_code' => 'nullable|string|max:50|unique:employees,employee_code',
+            'first_name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'email' => 'required|string|email|max:255|unique:users,email|unique:employees,email',
+            'phone' => 'nullable|string|max:30',
+            'dob' => 'nullable|date',
+            'gender' => 'nullable|string|max:20',
+            'address' => 'nullable|string',
+            'join_date' => 'nullable|date',
+            'employment_type' => 'nullable|string|max:30',
+            'status' => 'nullable|string|max:30',
             'password' => 'required|string|min:8',
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
+        DB::beginTransaction();
+        try {
+            $employee = Employee::create([
+                'employee_code' => $validated['employee_code'] ?? null,
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'] ?? null,
+                'dob' => $validated['dob'] ?? null,
+                'gender' => $validated['gender'] ?? null,
+                'address' => $validated['address'] ?? null,
+                'join_date' => $validated['join_date'] ?? null,
+                'employment_type' => $validated['employment_type'] ?? null,
+                'status' => $validated['status'] ?? null,
+            ]);
 
-        return response()->json($user, 201);
+            $user = User::create([
+                'employee_id' => $employee->id,
+                'email' => $validated['email'],
+                'password_hash' => Hash::make($validated['password']),
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'User and Employee created successfully',
+                'employee' => $employee,
+                'user' => $user,
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to create user',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
