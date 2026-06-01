@@ -49,10 +49,10 @@ class UserController extends Controller
                 'last_name' => $validated['last_name'],
                 'email' => $validated['email'],
                 'phone' => $validated['phone'] ?? null,
-                'dob' => $validated['dob'] ?? null,
+                'dob' => !empty($validated['dob']) ? date('Y-m-d', strtotime($validated['dob'])) : null,
                 'gender' => $validated['gender'] ?? null,
                 'address' => $validated['address'] ?? null,
-                'join_date' => $validated['join_date'] ?? null,
+                'join_date' => !empty($validated['join_date']) ? date('Y-m-d', strtotime($validated['join_date'])) : null,
                 'employment_type' => $validated['employment_type'] ?? null,
                 'status' => $validated['status'] ?? null,
             ]);
