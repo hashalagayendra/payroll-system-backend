@@ -2,24 +2,52 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
+     *
+     * NexaSync Technologies (Pvt) Ltd – Startup Software Company
+     * Seeding order respects foreign-key dependency chain.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call([
+            // ── Core Configuration ────────────────────────────────────────────────
+            SystemSettingSeeder::class,
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            // ── Organisational Structure ──────────────────────────────────────────
+            BranchSeeder::class,
+            DepartmentSeeder::class,
+            DesignationSeeder::class,
+
+            // ── Employees ────────────────────────────────────────────────────────
+            EmployeeSeeder::class,
+            EmployeeDocumentSeeder::class,
+            EmployeeBankDetailSeeder::class,
+
+            // ── Projects & Timesheets ─────────────────────────────────────────────
+            ProjectSeeder::class,
+            ProjectAssignmentSeeder::class,
+            AttendanceSeeder::class,
+            TimesheetSeeder::class,
+
+            // ── Payroll ───────────────────────────────────────────────────────────
+            TaxTypeSeeder::class,
+            SalaryStructureSeeder::class,
+            EmployeeSalarySeeder::class,
+            PayrollRunSeeder::class,
+            PayrollSlipSeeder::class,
+            BonusSeeder::class,
+            DeductionSeeder::class,
+            EmployeeTaxRecordSeeder::class,
+            SalaryPaymentSeeder::class,
+
+            // ── System Users & Audit ──────────────────────────────────────────────
+            UserSeeder::class,
+            AuditLogSeeder::class,
         ]);
     }
 }

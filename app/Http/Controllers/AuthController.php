@@ -95,7 +95,43 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Login successful',
             'user' => $user,
-          
         ])->withCookie($cookie);
+    }
+
+    /**
+     * Validate the HTTP-only auth_token cookie.
+     */
+    public function validateToken(Request $request): JsonResponse
+    {
+        $token = $request->cookie('auth_token');
+
+        if (!$token) {
+            return response()->json([
+                'message' => 'Unauthenticated.'
+            ], 401);
+        }
+
+        $accessToken = \Laravel\Sanctum\PersonalAccessToken::findToken($token);
+
+        if (!$accessToken || !$accessToken->tokenable) {
+            return response()->json([
+                'message' => 'Unauthenticated.'
+            ], 401);
+        }
+
+        $user = $accessToken->tokenable;
+
+        return response()->json([
+            'message' => 'Authenticated',
+            'user' => [
+                'id' => $user->id,
+                'employee_id' => $user->employee_id,
+                'email' => $user->email,
+                'role' => $user->role,
+                'last_login' => $user->last_login,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+            ],
+        ]);
     }
 }
