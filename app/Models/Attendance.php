@@ -9,6 +9,8 @@ class Attendance extends Model
 {
     use HasFactory;
 
+    protected $table = 'attendance';
+    public $timestamps = false;
     protected $guarded = [];
 
     public function employee()

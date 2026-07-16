@@ -37,6 +37,11 @@ Route::post('/employee-bank-details', [\App\Http\Controllers\EmployeeBankDetailC
 Route::put('/employee-bank-details/{id}', [\App\Http\Controllers\EmployeeBankDetailController::class, 'updateBankDetail']);
 Route::delete('/employee-bank-details/{id}', [\App\Http\Controllers\EmployeeBankDetailController::class, 'deleteBankDetail']);
 
+Route::get('/attendance', [\App\Http\Controllers\AttendanceController::class, 'getDailyAttendance']);
+Route::get('/attendance/monthly-summary', [\App\Http\Controllers\AttendanceController::class, 'getMonthlySummary']);
+Route::post('/attendance', [\App\Http\Controllers\AttendanceController::class, 'markAttendance']);
+Route::post('/attendance/bulk', [\App\Http\Controllers\AttendanceController::class, 'bulkMarkAttendance']);
+
 Route::get('/branches', function () {
     return response()->json([
         'success' => true,
