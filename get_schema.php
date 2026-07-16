@@ -1,0 +1,13 @@
+<?php
+require __DIR__.'/vendor/autoload.php';
+\ = require_once __DIR__.'/bootstrap/app.php';
+\ = \->make(Illuminate\Contracts\Console\Kernel::class);
+\->bootstrap();
+
+\ = \Illuminate\Support\Facades\Schema::getConnection()->getDoctrineSchemaManager()->listTableNames();
+\ = [];
+foreach (\ as \) {
+    \ = \Illuminate\Support\Facades\Schema::getColumnListing(\);
+    \[\] = \;
+}
+echo json_encode(\, JSON_PRETTY_PRINT);

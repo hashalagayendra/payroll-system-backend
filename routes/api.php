@@ -19,3 +19,7 @@ Route::prefix('users')->group(function () {
     Route::put('/{user}', [\App\Http\Controllers\UserController::class, 'updateUserName']);
     Route::delete('/{user}', [\App\Http\Controllers\UserController::class, 'deleteUser']);
 });
+
+Route::prefix('employees')->group(function () {
+    Route::get('/', [\App\Http\Controllers\EmployeeController::class, 'getAllEmployees']);
+});
