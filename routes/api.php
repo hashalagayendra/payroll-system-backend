@@ -34,6 +34,8 @@ Route::delete('/employee-documents/{id}', [\App\Http\Controllers\EmployeeDocumen
 
 Route::get('/employee-bank-details', [\App\Http\Controllers\EmployeeBankDetailController::class, 'getAllBankDetails']);
 Route::post('/employee-bank-details', [\App\Http\Controllers\EmployeeBankDetailController::class, 'createBankDetail']);
+Route::put('/employee-bank-details/{id}', [\App\Http\Controllers\EmployeeBankDetailController::class, 'updateBankDetail']);
+Route::delete('/employee-bank-details/{id}', [\App\Http\Controllers\EmployeeBankDetailController::class, 'deleteBankDetail']);
 
 Route::get('/branches', function () {
     return response()->json([

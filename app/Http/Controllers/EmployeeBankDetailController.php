@@ -54,4 +54,36 @@ class EmployeeBankDetailController extends Controller
             'data' => $bankDetail
         ], 201);
     }
+
+    public function updateBankDetail(Request $request, $id)
+    {
+        $bankDetail = EmployeeBankDetail::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'bank_name' => 'required|string|max:255',
+            'account_number' => 'required|string|max:255',
+            'branch_name' => 'required|string|max:255',
+            'swift_code' => 'required|string|max:255',
+        ]);
+
+        $bankDetail->update($validatedData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Bank details updated successfully',
+            'data' => $bankDetail
+        ]);
+    }
+
+    public function deleteBankDetail($id)
+    {
+        $bankDetail = EmployeeBankDetail::findOrFail($id);
+        $bankDetail->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Bank details deleted successfully'
+        ]);
+    }
 }
