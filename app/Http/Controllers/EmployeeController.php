@@ -20,6 +20,33 @@ class EmployeeController extends Controller
         ]);
     }
 
+    public function getEmployeeById($id)
+    {
+        $employee = Employee::with([
+            'branch', 
+            'department', 
+            'designation', 
+            'reportingManager',
+            'bankDetail',
+            'salary.salaryStructure',
+            'documents',
+            'projectAssignments.project'
+        ])->find($id);
+
+        if (!$employee) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Employee not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $employee,
+            'message' => 'Employee details retrieved successfully'
+        ]);
+    }
+
     public function createEmployee(Request $request)
     {
         $validator = Validator::make($request->all(), [

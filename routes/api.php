@@ -22,6 +22,7 @@ Route::prefix('users')->group(function () {
 
 Route::prefix('employees')->group(function () {
     Route::get('/', [\App\Http\Controllers\EmployeeController::class, 'getAllEmployees']);
+    Route::get('/{id}', [\App\Http\Controllers\EmployeeController::class, 'getEmployeeById']);
     Route::post('/', [\App\Http\Controllers\EmployeeController::class, 'createEmployee']);
     Route::put('/{id}', [\App\Http\Controllers\EmployeeController::class, 'updateEmployee']);
     Route::delete('/{id}', [\App\Http\Controllers\EmployeeController::class, 'deleteEmployee']);
