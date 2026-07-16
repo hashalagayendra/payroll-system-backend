@@ -32,6 +32,8 @@ Route::get('/employee-documents', [\App\Http\Controllers\EmployeeDocumentControl
 Route::post('/employee-documents', [\App\Http\Controllers\EmployeeDocumentController::class, 'uploadDocument']);
 Route::delete('/employee-documents/{id}', [\App\Http\Controllers\EmployeeDocumentController::class, 'deleteDocument']);
 
+Route::get('/employee-bank-details', [\App\Http\Controllers\EmployeeBankDetailController::class, 'getAllBankDetails']);
+
 Route::get('/branches', function () {
     return response()->json([
         'success' => true,
