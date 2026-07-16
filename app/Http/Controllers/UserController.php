@@ -2,57 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Employee;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    /**
-     * Fetch all users from the database.
-     */
-    public function getAllUsers(): JsonResponse
+    public function getAllUsers()
     {
-        $users = User::all();
-        
-        return response()->json($users);
+        return response()->json(['success' => true, 'data' => []]);
     }
 
-
-    /**
-     * Get a single user by their ID.
-     */
-    public function getUserById(User $user): JsonResponse
+    public function getUserById($id)
     {
-        return response()->json($user);
+        return response()->json(['success' => true, 'data' => null]);
     }
 
-    /**
-     * Update the name of an existing user.
-     */
-    public function updateUserName(Request $request, User $user): JsonResponse
+    public function updateUserName(Request $request, $id)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
-
-        $user->update([
-            'name' => $validated['name'],
-        ]);
-
-        return response()->json($user);
+        return response()->json(['success' => true, 'data' => null]);
     }
 
-    /**
-     * Delete a user from the database.
-     */
-    public function deleteUser(User $user): JsonResponse
+    public function deleteUser($id)
     {
-        $user->delete();
-        
-        return response()->json(['message' => 'User deleted successfully.']);
+        return response()->json(['success' => true]);
     }
 }

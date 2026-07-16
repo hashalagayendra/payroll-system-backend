@@ -22,4 +22,28 @@ Route::prefix('users')->group(function () {
 
 Route::prefix('employees')->group(function () {
     Route::get('/', [\App\Http\Controllers\EmployeeController::class, 'getAllEmployees']);
+    Route::post('/', [\App\Http\Controllers\EmployeeController::class, 'createEmployee']);
+    Route::put('/{id}', [\App\Http\Controllers\EmployeeController::class, 'updateEmployee']);
+    Route::delete('/{id}', [\App\Http\Controllers\EmployeeController::class, 'deleteEmployee']);
+});
+
+Route::get('/branches', function () {
+    return response()->json([
+        'success' => true,
+        'data' => \App\Models\Branch::all()
+    ]);
+});
+
+Route::get('/departments', function () {
+    return response()->json([
+        'success' => true,
+        'data' => \App\Models\Department::all()
+    ]);
+});
+
+Route::get('/designations', function () {
+    return response()->json([
+        'success' => true,
+        'data' => \App\Models\Designation::all()
+    ]);
 });
