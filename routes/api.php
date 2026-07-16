@@ -30,6 +30,7 @@ Route::prefix('employees')->group(function () {
 
 Route::get('/employee-documents', [\App\Http\Controllers\EmployeeDocumentController::class, 'getAllDocuments']);
 Route::post('/employee-documents', [\App\Http\Controllers\EmployeeDocumentController::class, 'uploadDocument']);
+Route::delete('/employee-documents/{id}', [\App\Http\Controllers\EmployeeDocumentController::class, 'deleteDocument']);
 
 Route::get('/branches', function () {
     return response()->json([

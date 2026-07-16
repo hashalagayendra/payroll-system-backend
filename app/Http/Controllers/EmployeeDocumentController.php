@@ -78,4 +78,36 @@ class EmployeeDocumentController extends Controller
             ], 500);
         }
     }
+
+    public function deleteDocument($id)
+    {
+        try {
+            $document = EmployeeDocument::find($id);
+
+            if (!$document) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Document not found'
+                ], 404);
+            }
+
+            // Get raw original path from database to delete from Azure
+            $path = $document->getRawOriginal('file_url');
+            if ($path && !filter_var($path, FILTER_VALIDATE_URL)) {
+                \Illuminate\Support\Facades\Storage::disk('azure')->delete($path);
+            }
+
+            $document->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Document deleted successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete document: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
