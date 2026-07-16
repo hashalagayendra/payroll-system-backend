@@ -29,6 +29,7 @@ Route::prefix('employees')->group(function () {
 });
 
 Route::get('/employee-documents', [\App\Http\Controllers\EmployeeDocumentController::class, 'getAllDocuments']);
+Route::post('/employee-documents', [\App\Http\Controllers\EmployeeDocumentController::class, 'uploadDocument']);
 
 Route::get('/branches', function () {
     return response()->json([

@@ -10,7 +10,8 @@
         "dedoc/scramble": "^0.13.24",
         "laravel/framework": "^13.8",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^3.0"
+        "laravel/tinker": "^3.0",
+        "matthewbdaly/laravel-azure-storage": "^2.0"
     },
     "require-dev": {
         "beyondcode/laravel-er-diagram-generator": "^6.0",

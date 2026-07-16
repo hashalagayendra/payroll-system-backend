@@ -40,4 +40,42 @@ class EmployeeDocumentController extends Controller
             'message' => 'Employee documents retrieved successfully'
         ]);
     }
+
+    public function uploadDocument(Request $request)
+    {
+        $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'type' => 'required|string|max:100',
+            'file' => 'required|file|max:10240', // Max 10MB
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            
+            // Upload to Azure
+            $path = \Illuminate\Support\Facades\Storage::disk('azure')->putFileAs(
+                '', // Root of the container
+                $file,
+                $fileName
+            );
+
+            $document = EmployeeDocument::create([
+                'employee_id' => $request->employee_id,
+                'type' => $request->type,
+                'file_url' => $path, // Store relative path/filename
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => clone $document->load('employee'),
+                'message' => 'Document uploaded successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to upload document: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }
