@@ -35,4 +35,23 @@ class EmployeeBankDetailController extends Controller
             'data' => $bankDetails
         ]);
     }
+
+    public function createBankDetail(Request $request)
+    {
+        $validatedData = $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'bank_name' => 'required|string|max:255',
+            'account_number' => 'required|string|max:255',
+            'branch_name' => 'required|string|max:255',
+            'swift_code' => 'required|string|max:255',
+        ]);
+
+        $bankDetail = EmployeeBankDetail::create($validatedData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Bank details added successfully',
+            'data' => $bankDetail
+        ], 201);
+    }
 }

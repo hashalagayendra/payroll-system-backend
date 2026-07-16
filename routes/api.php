@@ -33,6 +33,7 @@ Route::post('/employee-documents', [\App\Http\Controllers\EmployeeDocumentContro
 Route::delete('/employee-documents/{id}', [\App\Http\Controllers\EmployeeDocumentController::class, 'deleteDocument']);
 
 Route::get('/employee-bank-details', [\App\Http\Controllers\EmployeeBankDetailController::class, 'getAllBankDetails']);
+Route::post('/employee-bank-details', [\App\Http\Controllers\EmployeeBankDetailController::class, 'createBankDetail']);
 
 Route::get('/branches', function () {
     return response()->json([
