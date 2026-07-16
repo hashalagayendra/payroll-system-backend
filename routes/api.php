@@ -28,6 +28,8 @@ Route::prefix('employees')->group(function () {
     Route::delete('/{id}', [\App\Http\Controllers\EmployeeController::class, 'deleteEmployee']);
 });
 
+Route::get('/employee-documents', [\App\Http\Controllers\EmployeeDocumentController::class, 'getAllDocuments']);
+
 Route::get('/branches', function () {
     return response()->json([
         'success' => true,
