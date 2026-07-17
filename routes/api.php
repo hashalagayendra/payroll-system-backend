@@ -50,12 +50,8 @@ Route::get('/attendance/export', [\App\Http\Controllers\AttendanceController::cl
 Route::post('/attendance', [\App\Http\Controllers\AttendanceController::class, 'markAttendance']);
 Route::post('/attendance/bulk', [\App\Http\Controllers\AttendanceController::class, 'bulkMarkAttendance']);
 
-Route::get('/branches', function () {
-    return response()->json([
-        'success' => true,
-        'data' => \App\Models\Branch::all()
-    ]);
-});
+Route::get('/branches', [\App\Http\Controllers\BranchController::class, 'index']);
+Route::post('/branches', [\App\Http\Controllers\BranchController::class, 'store']);
 
 Route::get('/departments', function () {
     return response()->json([
