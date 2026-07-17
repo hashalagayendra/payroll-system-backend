@@ -45,6 +45,7 @@ Route::delete('/timesheets/{id}', [\App\Http\Controllers\TimesheetController::cl
 
 Route::get('/attendance', [\App\Http\Controllers\AttendanceController::class, 'getDailyAttendance']);
 Route::get('/attendance/monthly-summary', [\App\Http\Controllers\AttendanceController::class, 'getMonthlySummary']);
+Route::get('/attendance/export', [\App\Http\Controllers\AttendanceController::class, 'exportAttendance']);
 Route::post('/attendance', [\App\Http\Controllers\AttendanceController::class, 'markAttendance']);
 Route::post('/attendance/bulk', [\App\Http\Controllers\AttendanceController::class, 'bulkMarkAttendance']);
 

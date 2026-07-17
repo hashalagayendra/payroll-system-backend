@@ -210,4 +210,58 @@ class AttendanceController extends Controller
             'employee_stats' => $employeeStats
         ]);
     }
+
+    public function exportAttendance(Request $request)
+    {
+        $request->validate([
+            'month' => 'nullable|integer|min:1|max:12',
+            'year' => 'nullable|integer|min:2000|max:2100'
+        ]);
+
+        $month = $request->input('month', Carbon::today()->month);
+        $year = $request->input('year', Carbon::today()->year);
+
+        $employees = \App\Models\Employee::where('status', 'ACTIVE')->get();
+        $attendances = Attendance::whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->get();
+
+        $csvFileName = "attendance_export_{$year}_{$month}.csv";
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$csvFileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $columns = ['Employee Code', 'First Name', 'Last Name', 'Present', 'Absent', 'Late', 'Half Day', 'Total Marked'];
+
+        $callback = function() use($employees, $attendances, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($employees as $emp) {
+                $empAttendances = $attendances->where('employee_id', $emp->id);
+                $present = $empAttendances->where('status', 'PRESENT')->count();
+                $absent = $empAttendances->where('status', 'ABSENT')->count();
+                $late = $empAttendances->where('status', 'LATE')->count();
+                $halfDay = $empAttendances->where('status', 'HALF_DAY')->count();
+
+                fputcsv($file, [
+                    $emp->employee_code,
+                    $emp->first_name,
+                    $emp->last_name,
+                    $present,
+                    $absent,
+                    $late,
+                    $halfDay,
+                    $present + $absent + $late + $halfDay
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }
