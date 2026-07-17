@@ -38,4 +38,27 @@ class TimesheetController extends Controller
             'data' => $timesheets
         ]);
     }
+
+    public function createTimesheet(Request $request)
+    {
+        $validated = $request->validate([
+            'employee_id' => 'required|exists:employees,id',
+            'project_id' => 'required|exists:projects,id',
+            'task_description' => 'required|string',
+            'work_date' => 'required|date',
+            'hours_worked' => 'required|numeric|min:0',
+            'billable' => 'required|boolean',
+        ]);
+
+        $timesheet = \App\Models\Timesheet::query()->create($validated);
+
+        // Load relations for response
+        $timesheet->load(['employee', 'project']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Timesheet entry created successfully.',
+            'data' => $timesheet
+        ], 201);
+    }
 }
