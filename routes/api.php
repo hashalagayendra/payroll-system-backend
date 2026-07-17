@@ -82,9 +82,22 @@ Route::delete('/project-assignments/{id}', [ProjectAssignmentController::class, 
 Route::get('/payroll-runs', [PayrollRunController::class, 'index']);
 
 use App\Http\Controllers\SalaryStructureController;
+use App\Http\Controllers\EmployeeSalaryController;
 
 Route::get('/salary-structures', [SalaryStructureController::class, 'index']);
 Route::post('/salary-structures', [SalaryStructureController::class, 'store']);
 Route::get('/salary-structures/{id}', [SalaryStructureController::class, 'show']);
 Route::put('/salary-structures/{id}', [SalaryStructureController::class, 'update']);
 Route::delete('/salary-structures/{id}', [SalaryStructureController::class, 'destroy']);
+
+Route::get('/employee-salaries', [EmployeeSalaryController::class, 'index']);
+Route::post('/employee-salaries', [EmployeeSalaryController::class, 'store']);
+Route::put('/employee-salaries/{id}', [EmployeeSalaryController::class, 'update']);
+Route::delete('/employee-salaries/{id}', [EmployeeSalaryController::class, 'destroy']);
+
+use App\Http\Controllers\BonusController;
+
+Route::get('/bonuses', [BonusController::class, 'index']);
+Route::post('/bonuses', [BonusController::class, 'store']);
+Route::put('/bonuses/{id}', [BonusController::class, 'update']);
+Route::delete('/bonuses/{id}', [BonusController::class, 'destroy']);

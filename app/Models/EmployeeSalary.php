@@ -9,6 +9,8 @@ class EmployeeSalary extends Model
 {
     use HasFactory;
 
+    const UPDATED_AT = null;
+
     protected $guarded = [];
 
     public function employee()
