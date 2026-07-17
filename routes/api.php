@@ -21,6 +21,7 @@ Route::prefix('users')->group(function () {
 });
 
 Route::prefix('employees')->group(function () {
+    Route::get('/all', [\App\Http\Controllers\EmployeeController::class, 'getAllEmployeesWithoutPagination']);
     Route::get('/', [\App\Http\Controllers\EmployeeController::class, 'getAllEmployees']);
     Route::get('/{id}', [\App\Http\Controllers\EmployeeController::class, 'getEmployeeById']);
     Route::post('/', [\App\Http\Controllers\EmployeeController::class, 'createEmployee']);
@@ -70,9 +71,12 @@ Route::get('/designations', function () {
     ]);
 });
 
-Route::get('/projects', function () {
-    return response()->json([
-        'success' => true,
-        'data' => \App\Models\Project::all()
-    ]);
-});
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectAssignmentController;
+
+Route::get('/projects', [ProjectController::class, 'index']);
+Route::post('/projects', [ProjectController::class, 'store']);
+Route::put('/projects/{id}', [ProjectController::class, 'update']);
+
+Route::post('/project-assignments', [ProjectAssignmentController::class, 'store']);
+Route::delete('/project-assignments/{id}', [ProjectAssignmentController::class, 'destroy']);

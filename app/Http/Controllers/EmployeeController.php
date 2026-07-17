@@ -20,6 +20,17 @@ class EmployeeController extends Controller
         ]);
     }
 
+    public function getAllEmployeesWithoutPagination()
+    {
+        $employees = Employee::with(['branch', 'department', 'designation', 'reportingManager'])->get();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $employees,
+            'message' => 'All employees retrieved successfully'
+        ]);
+    }
+
     public function getEmployeeById($id)
     {
         $employee = Employee::with([
