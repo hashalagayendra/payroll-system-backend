@@ -52,6 +52,9 @@ Route::post('/attendance/bulk', [\App\Http\Controllers\AttendanceController::cla
 
 Route::get('/branches', [\App\Http\Controllers\BranchController::class, 'index']);
 Route::post('/branches', [\App\Http\Controllers\BranchController::class, 'store']);
+Route::get('/branches/{id}', [\App\Http\Controllers\BranchController::class, 'show']);
+Route::put('/branches/{id}', [\App\Http\Controllers\BranchController::class, 'update']);
+Route::delete('/branches/{id}', [\App\Http\Controllers\BranchController::class, 'destroy']);
 
 Route::get('/departments', function () {
     return response()->json([
