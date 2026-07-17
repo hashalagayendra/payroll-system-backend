@@ -61,4 +61,36 @@ class TimesheetController extends Controller
             'data' => $timesheet
         ], 201);
     }
+
+    public function updateTimesheet(Request $request, $id)
+    {
+        $timesheet = \App\Models\Timesheet::find($id);
+
+        if (!$timesheet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Timesheet entry not found.'
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'employee_id' => 'sometimes|required|exists:employees,id',
+            'project_id' => 'sometimes|required|exists:projects,id',
+            'task_description' => 'sometimes|required|string',
+            'work_date' => 'sometimes|required|date',
+            'hours_worked' => 'sometimes|required|numeric|min:0',
+            'billable' => 'sometimes|required|boolean',
+        ]);
+
+        $timesheet->update($validated);
+
+        // Load relations for response
+        $timesheet->load(['employee', 'project']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Timesheet entry updated successfully.',
+            'data' => $timesheet
+        ]);
+    }
 }
