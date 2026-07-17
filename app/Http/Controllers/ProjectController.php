@@ -66,4 +66,19 @@ class ProjectController extends Controller
             'data' => $project->load('assignments.employee')
         ]);
     }
+
+    public function destroy($id)
+    {
+        $project = Project::findOrFail($id);
+
+        // cascade deletes assignments & timesheets
+        $project->assignments()->delete();
+        $project->timesheets()->delete();
+        $project->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Project deleted successfully'
+        ]);
+    }
 }

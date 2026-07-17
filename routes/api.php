@@ -77,6 +77,7 @@ use App\Http\Controllers\ProjectAssignmentController;
 Route::get('/projects', [ProjectController::class, 'index']);
 Route::post('/projects', [ProjectController::class, 'store']);
 Route::put('/projects/{id}', [ProjectController::class, 'update']);
+Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
 
 Route::post('/project-assignments', [ProjectAssignmentController::class, 'store']);
 Route::delete('/project-assignments/{id}', [ProjectAssignmentController::class, 'destroy']);
