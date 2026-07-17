@@ -61,12 +61,11 @@ Route::post('/departments', [\App\Http\Controllers\DepartmentController::class, 
 Route::put('/departments/{id}', [\App\Http\Controllers\DepartmentController::class, 'update']);
 Route::delete('/departments/{id}', [\App\Http\Controllers\DepartmentController::class, 'destroy']);
 
-Route::get('/designations', function () {
-    return response()->json([
-        'success' => true,
-        'data' => \App\Models\Designation::all()
-    ]);
-});
+Route::get('/designations', [\App\Http\Controllers\DesignationController::class, 'index']);
+Route::get('/designations/{id}', [\App\Http\Controllers\DesignationController::class, 'show']);
+Route::post('/designations', [\App\Http\Controllers\DesignationController::class, 'store']);
+Route::put('/designations/{id}', [\App\Http\Controllers\DesignationController::class, 'update']);
+Route::delete('/designations/{id}', [\App\Http\Controllers\DesignationController::class, 'destroy']);
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectAssignmentController;
@@ -81,3 +80,11 @@ Route::post('/project-assignments', [ProjectAssignmentController::class, 'store'
 Route::delete('/project-assignments/{id}', [ProjectAssignmentController::class, 'destroy']);
 
 Route::get('/payroll-runs', [PayrollRunController::class, 'index']);
+
+use App\Http\Controllers\SalaryStructureController;
+
+Route::get('/salary-structures', [SalaryStructureController::class, 'index']);
+Route::post('/salary-structures', [SalaryStructureController::class, 'store']);
+Route::get('/salary-structures/{id}', [SalaryStructureController::class, 'show']);
+Route::put('/salary-structures/{id}', [SalaryStructureController::class, 'update']);
+Route::delete('/salary-structures/{id}', [SalaryStructureController::class, 'destroy']);
