@@ -93,4 +93,73 @@ class TimesheetController extends Controller
             'data' => $timesheet
         ]);
     }
+
+    public function deleteTimesheet($id)
+    {
+        $timesheet = \App\Models\Timesheet::find($id);
+
+        if (!$timesheet) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Timesheet entry not found.'
+            ], 404);
+        }
+
+        $timesheet->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Timesheet entry deleted successfully.'
+        ]);
+    }
+
+    public function getWeeklySummary(Request $request)
+    {
+        $weekStart = $request->query('week_start', \Carbon\Carbon::now()->startOfWeek()->toDateString());
+        $weekEnd = \Carbon\Carbon::parse($weekStart)->addDays(6)->toDateString();
+
+        $timesheets = \App\Models\Timesheet::with('employee')
+            ->whereBetween('work_date', [$weekStart, $weekEnd])
+            ->get();
+
+        $grouped = $timesheets->groupBy('employee_id');
+
+        $result = [];
+        foreach ($grouped as $employeeId => $sheets) {
+            $employee = $sheets->first()->employee;
+            
+            $days = [];
+            $total = 0;
+            
+            for ($i = 0; $i < 7; $i++) {
+                $date = \Carbon\Carbon::parse($weekStart)->addDays($i)->toDateString();
+                $days[$date] = 0;
+            }
+            
+            foreach ($sheets as $sheet) {
+                // Ensure work_date format matches the key format (YYYY-MM-DD)
+                // In some cases, Eloquent casts date to a Carbon instance.
+                // It's safer to format it explicitly.
+                $workDateStr = is_string($sheet->work_date) ? substr($sheet->work_date, 0, 10) : $sheet->work_date->toDateString();
+                
+                if (isset($days[$workDateStr])) {
+                    $days[$workDateStr] += (float) $sheet->hours_worked;
+                }
+                $total += (float) $sheet->hours_worked;
+            }
+            
+            $result[] = [
+                'employee' => $employee,
+                'days' => $days,
+                'total' => $total
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'week_start' => $weekStart,
+            'week_end' => $weekEnd,
+            'data' => $result
+        ]);
+    }
 }

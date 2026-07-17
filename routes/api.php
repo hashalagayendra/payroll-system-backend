@@ -37,9 +37,11 @@ Route::post('/employee-bank-details', [\App\Http\Controllers\EmployeeBankDetailC
 Route::put('/employee-bank-details/{id}', [\App\Http\Controllers\EmployeeBankDetailController::class, 'updateBankDetail']);
 Route::delete('/employee-bank-details/{id}', [\App\Http\Controllers\EmployeeBankDetailController::class, 'deleteBankDetail']);
 
+Route::get('/timesheets/weekly', [\App\Http\Controllers\TimesheetController::class, 'getWeeklySummary']);
 Route::get('/timesheets', [\App\Http\Controllers\TimesheetController::class, 'getAllTimesheets']);
 Route::post('/timesheets', [\App\Http\Controllers\TimesheetController::class, 'createTimesheet']);
 Route::put('/timesheets/{id}', [\App\Http\Controllers\TimesheetController::class, 'updateTimesheet']);
+Route::delete('/timesheets/{id}', [\App\Http\Controllers\TimesheetController::class, 'deleteTimesheet']);
 
 Route::get('/attendance', [\App\Http\Controllers\AttendanceController::class, 'getDailyAttendance']);
 Route::get('/attendance/monthly-summary', [\App\Http\Controllers\AttendanceController::class, 'getMonthlySummary']);
