@@ -56,12 +56,10 @@ Route::get('/branches/{id}', [\App\Http\Controllers\BranchController::class, 'sh
 Route::put('/branches/{id}', [\App\Http\Controllers\BranchController::class, 'update']);
 Route::delete('/branches/{id}', [\App\Http\Controllers\BranchController::class, 'destroy']);
 
-Route::get('/departments', function () {
-    return response()->json([
-        'success' => true,
-        'data' => \App\Models\Department::all()
-    ]);
-});
+Route::get('/departments', [\App\Http\Controllers\DepartmentController::class, 'index']);
+Route::post('/departments', [\App\Http\Controllers\DepartmentController::class, 'store']);
+Route::put('/departments/{id}', [\App\Http\Controllers\DepartmentController::class, 'update']);
+Route::delete('/departments/{id}', [\App\Http\Controllers\DepartmentController::class, 'destroy']);
 
 Route::get('/designations', function () {
     return response()->json([
