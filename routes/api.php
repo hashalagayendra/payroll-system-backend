@@ -73,6 +73,7 @@ Route::get('/designations', function () {
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectAssignmentController;
+use App\Http\Controllers\PayrollRunController;
 
 Route::get('/projects', [ProjectController::class, 'index']);
 Route::post('/projects', [ProjectController::class, 'store']);
@@ -81,3 +82,5 @@ Route::delete('/projects/{id}', [ProjectController::class, 'destroy']);
 
 Route::post('/project-assignments', [ProjectAssignmentController::class, 'store']);
 Route::delete('/project-assignments/{id}', [ProjectAssignmentController::class, 'destroy']);
+
+Route::get('/payroll-runs', [PayrollRunController::class, 'index']);
